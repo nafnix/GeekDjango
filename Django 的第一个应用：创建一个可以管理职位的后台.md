@@ -19,6 +19,13 @@ python manage.py startapp jobs
 
 ## 创建 model 模型
 
+- `blank`参数：设置字段允许为空
+- `choices`参数：指定 Django 固定类型 
+- `verbose_name`参数：指定字段备注
+- `model.ForeignKey`：外键关联
+- `default`参数：指定初始值
+- `null`参数：允许初始值为`null`
+
 ```python
 # jobs/models.py
 
@@ -45,11 +52,11 @@ class Job(models.Model):
     # - on_delete 记录删除时对应的数据如何处理。因为 on_delete 使用的是函数，所以末尾不需要加括号
     creator = models.ForeignKey(User, max_length=200, verbose_name="创建人", null=True, on_delete=models.SET_NULL)
     
-    created_date = models.DateTimeField(verbose_name="创建日期")
-    modified_date = models.DateTimeField(verbose_name="修改时间")
+    created_date = models.DateTimeField(verbose_name="创建日期", default=datetime.now)
+    modified_date = models.DateTimeField(verbose_name="修改时间", default=datetime.now)
 ```
 
-## 将 models 引入 admin
+## 将 models 注册到 admin
 
 ![](assets/Pasted%20image%2020220404132948.png)
 
@@ -67,4 +74,15 @@ python manage.py migrate
 ```
 
 然后就可以访问刚刚新增了条目的页面： http://localhost:2022/admin/jobs/job/
+
+## 在管理页面显示数据
+
+- 隐藏一些无须手动存储的字段
+- 将隐藏的字段自动设定存储值
+
+![image-20220405172823939](assets/image-20220405172823939.png)
+
+---
+
+![image-20220405172210415](assets/image-20220405172210415.png)
 
